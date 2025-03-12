@@ -79,3 +79,10 @@ class NBATracker(GameTracker):
 
         if not (ongoing_games or scheduled_games or completed_games):
             print("📅 No games available at this moment.")
+
+    async def fetch_game_data(self):
+        valid_games = await self.fetch_valid_game_urls()
+
+        if not valid_games:
+            print("📅 No games scheduled or in progress at the moment.")
+            return
