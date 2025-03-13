@@ -8,6 +8,50 @@ class GameTracker():
         self._API_KEY = api_key
         self._METADATA = f"https://replay.sportsdata.io/api/metadata?key={self._API_KEY}"
         self._league = league
+        self._leagues_stats = {
+            'nba': {
+                'game': {
+                    'game_key': 'Game',
+                    'game_id': 'GameID',
+                    'status': 'Status',
+                    'game_time': 'DateTime',
+                    'away_team': 'AwayTeam',
+                    'away_team_id': 'AwayTeamID',
+                    'home_team': 'HomeTeam',
+                    'home_team_id': 'HomeTeamID',
+                    'away_team_score': 'AwayTeamScore',
+                    'home_team_score': 'HomeTeamScore',
+                    'channel': 'Channel',
+                    'quarter': 'Quarter',
+                    'minutes_remaining': 'TimeRemainingMinutes',
+                    'seconds_remaining': 'TimeRemainingSeconds',
+                    'last_play': 'LastPlay',
+                    'quarters': 'Quarters'
+                },
+                'team': {
+                    'team_key': 'TeamGames',
+                    'game_id': 'GameID'
+                }
+            },
+            'nfl': {
+                'results': 'Score',
+                'status': 'Status',
+                'away_team': 'AwayTeam',
+                'home_team': 'HomeTeam',
+                'away_team_score': 'AwayScore',
+                'home_team_score': 'HomeScore',
+                'game_time': 'DateTime'
+            },
+            'nhl': {
+                'results': 'Game',
+                'status': 'Status',
+                'away_team': 'AwayTeam',
+                'home_team': 'HomeTeam',
+                'away_team_score': 'AwayTeamScore',
+                'home_team_score': 'HomeTeamScore',
+                'game_time': 'DateTime'
+            }
+        }
 
     async def fetch_game_urls(self, session):
         try:
@@ -57,3 +101,19 @@ class GameTracker():
             results = await asyncio.gather(*tasks)
 
             return [game for game in results if game is not None]
+
+    async def fetch_all_game_data(self):
+        valid_games = await self.fetch_valid_game_urls()
+        if not valid_games:
+            print("📅 No games scheduled or in progress at the moment.")
+            return
+
+        return [game_data[self._leagues_stats[self._league]['game']["game_key"]] for game_data in valid_games]
+
+    async def fetch_all_team_data(self):
+        valid_games = await self.fetch_valid_game_urls()
+        if not valid_games:
+            print("📅 No games scheduled or in progress at the moment.")
+            return
+
+        return valid_games

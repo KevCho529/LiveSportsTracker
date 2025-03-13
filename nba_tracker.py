@@ -9,80 +9,82 @@ class NBATracker(GameTracker):
         super().__init__(api_key, "nba")
 
     @time_it
-    async def game_progresses(self):
-        valid_games = await self.fetch_valid_game_urls()
-        if not valid_games:
-            print("📅 No games scheduled or in progress at the moment.")
-            return
+    async def get_live_scores(self):
+        """
+        API request for live score stats.
+        """
+        game_data = await self.fetch_all_game_data()
 
-        scheduled_games = []
-        ongoing_games = []
-        completed_games = []
+        live_score_data = []
 
-        for game_data in valid_games:
-            league = {
-                'nba': {
-                    'results': 'Game',
-                    'status': 'Status',
-                    'away_team': 'AwayTeam',
-                    'home_team': 'HomeTeam',
-                    'away_team_score': 'AwayTeamScore',
-                    'home_team_score': 'HomeTeamScore',
-                    'game_time': 'DateTime'
-                }
-            }
-            game_info = game_data[league[self._league]["results"]]
+        for game_info in game_data:
+            status = game_info.get(
+                self._leagues_stats[self._league]['game']["status"], 'Unknown')
 
-            status = game_info.get(league[self._league]["status"], 'Unknown')
-            away_team = game_info.get(
-                league[self._league]["away_team"], 'Unknown')
-            home_team = game_info.get(
-                league[self._league]["home_team"], 'Unknown')
-            away_team_score = game_info.get(
-                league[self._league]["away_team_score"], 0)
-            home_team_score = game_info.get(
-                league[self._league]["home_team_score"], 0)
-            datetime_str = game_info.get(league[self._league]["game_time"], '')
+            live_score_data.append({
+                'status': status,
+                'game_id': game_info.get(self._leagues_stats[self._league]['game']["game_id"], 'Unknown'),
+                'game_time': datetime.strptime(game_info.get(self._leagues_stats[self._league]['game']["game_time"], ''), "%Y-%m-%dT%H:%M:%S").strftime("%B %d, %Y - %I:%M %p") if game_info.get(self._leagues_stats[self._league]['game']["game_time"], '') else "Unknown",
+                'away_team': game_info.get(self._leagues_stats[self._league]['game']["away_team"], 'Unknown'),
+                'away_team_id': game_info.get(self._leagues_stats[self._league]['game']["away_team_id"], 'Unknown'),
+                'home_team': game_info.get(self._leagues_stats[self._league]['game']["home_team"], 'Unknown'),
+                'home_team_id': game_info.get(self._leagues_stats[self._league]['game']["home_team_id"], 'Unknown'),
+                'away_team_score': game_info.get(self._leagues_stats[self._league]['game']["away_team_score"], 0),
+                'home_team_score': game_info.get(self._leagues_stats[self._league]['game']["home_team_score"], 0),
+                'channel': game_info.get(self._leagues_stats[self._league]['game']["channel"], 'Unknown'),
+                'quarter': game_info.get(self._leagues_stats[self._league]['game']["quarter"], 'Unknown'),
+                'minutes_remaining': game_info.get(self._leagues_stats[self._league]['game']["minutes_remaining"], 'Unknown'),
+                'seconds_remaining': game_info.get(self._leagues_stats[self._league]['game']["seconds_remaining"], 'Unknown')
+            })
+        return live_score_data
 
-            if datetime_str:
-                game_datetime = datetime.strptime(
-                    datetime_str, "%Y-%m-%dT%H:%M:%S")
-                game_time = game_datetime.strftime("%B %d, %Y - %I:%M %p")
+    async def get_last_play(self):
+        """
+        API request for live last play stats.
+        """
 
-            if status == 'Scheduled':
-                scheduled_games.append(
-                    f"🕒 {away_team} vs {home_team} is scheduled to start at {game_time} EST")
-            elif status == "Final":
-                completed_games.append(
-                    f"✅ Final Score: {away_team} {away_team_score} - {home_team} {home_team_score}")
-            else:
-                ongoing_games.append(
-                    f"Game in progress: {away_team} {away_team_score} - {home_team} {home_team_score} ")
+        game_data = await self.fetch_all_game_data()
 
-        league_names = {
-            "nba": "🏀 ___NBA Games___ 🏀"
-        }
+        last_play_data = []
 
-        print(f"\n{league_names.get(self._league, '🏆 **Game Tracker** 🏆')}")
+        for game_info in game_data:
+            status = game_info.get(
+                self._leagues_stats[self._league]['game']["status"], 'Unknown')
 
-        if ongoing_games:
-            print("\n🔥 **Ongoing Games:**")
-            print("\n".join(ongoing_games))
+            last_play_data.append({
+                'game_id': game_info.get(self._leagues_stats[self._league]['game']["game_id"], 'Unknown'),
+                'last_play': game_info.get(self._leagues_stats[self._league]['game']["last_play"], 'Unknown'),
+                'quarter': game_info.get(self._leagues_stats[self._league]['game']["quarter"], 'Unknown'),
+                'minutes_remaining': game_info.get(self._leagues_stats[self._league]['game']["minutes_remaining"], 'Unknown'),
+                'seconds_remaining': game_info.get(self._leagues_stats[self._league]['game']["seconds_remaining"], 'Unknown')
+            })
+        return last_play_data
 
-        if scheduled_games:
-            print("\n📅 **Upcoming Games:**")
-            print("\n".join(scheduled_games))
+    async def get_quarter_scores(self):
+        """
+        API request for live quarter stats.
+        Name = GameID_quarters
+        """
+        game_data = await self.fetch_all_game_data()
 
-        if completed_games:
-            print("\n🏁 **Completed Games:**")
-            print("\n".join(completed_games))
+        quarters_data = []
 
-        if not (ongoing_games or scheduled_games or completed_games):
-            print("📅 No games available at this moment.")
+        for game_info in game_data:
+            game_id = game_info.get(
+                self._leagues_stats[self._league]['game']["game_id"], 'Unknown')
 
-    async def fetch_game_data(self):
-        valid_games = await self.fetch_valid_game_urls()
+            quarters_data.append({
+                f'{game_id}_quarters': game_info.get(self._leagues_stats[self._league]['game']["quarters"], {'Unknown'})
+            })
+        return quarters_data
 
-        if not valid_games:
-            print("📅 No games scheduled or in progress at the moment.")
-            return
+    async def get_team_stats(self):
+        """
+        API request for live team stats.
+        """
+        team_data = await self.fetch_all_team_data()
+
+        return team_data
+
+    async def get_player_data(self):
+        pass
