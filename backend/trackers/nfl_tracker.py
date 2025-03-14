@@ -1,9 +1,9 @@
-from game_tracker import GameTracker
+from backend.trackers.game_tracker import GameTracker
 import asyncio
 import aiohttp
 import re
 from datetime import datetime
-from tools import time_it
+from backend.tools import time_it
 
 
 class NFLTracker(GameTracker):
