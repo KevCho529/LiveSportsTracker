@@ -1,0 +1,122 @@
+/* Make sure the body has space on the left */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding-left: 20px;
+  /* Reduced padding to half */
+}
+
+header {
+  text-align: center;
+  /* Center the text horizontally */
+  margin: 0;
+  /* Remove any unnecessary margin */
+  padding: 20px 0;
+  /* Add some vertical padding for spacing */
+}
+
+
+/* Main content wrapper to push footer to bottom */
+.main-content {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* General container styling for game sections */
+.game-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  padding: 20px;
+  flex-grow: 1;
+  /* Allow the game container to take available space */
+  margin-left: 20px;
+  /* Reduced margin to half */
+}
+
+/* Styling for individual game cards */
+.game-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.game-card:hover {
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the team section (centered) */
+.team-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.team-left,
+.team-right {
+  text-align: left;
+}
+
+.vs {
+  font-size: 1.5rem;
+  margin: 0 10px;
+  font-weight: normal;
+}
+
+/* Styling for the score section */
+.score-section {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Styling for game details (quarter and time remaining) */
+.game-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1rem;
+  color: #333;
+}
+
+.quarter,
+.time-remaining {
+  margin: 5px 0;
+}
+
+/* Loading spinner styles */
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5em;
+  color: #333;
+  display: block;
+  text-align: center;
+  animation: spin 1s linear infinite;
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-size: 1rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}

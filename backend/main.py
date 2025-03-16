@@ -4,12 +4,27 @@ from backend.trackers.nhl_tracker import NHLTracker
 from backend.trackers.nfl_tracker import NFLTracker
 import asyncio
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
 app = FastAPI()
 app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 
-NBA_API_KEY = "167a18cadcbd4b309c89a7e340d3f6f4"
+origins = [
+    "http://127.0.0.1:5500",  # Your frontend URL
+    "http://localhost:5500",   # Another common local URL for your frontend
+]
+
+# Add CORS middleware to allow the frontend to make requests to the backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows specific origins
+    allow_credentials=True,
+    allow_methods=["*"],    # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],    # Allows all headers
+)
+
+NBA_API_KEY = "981418134aae41f1b4933d045d3595d3"
 NFL_API_KEY = "2891f655220d43498b23a867ae8606b7"
 NHL_API_KEY = "794239259de34523bd2187fe612a09d3"
 

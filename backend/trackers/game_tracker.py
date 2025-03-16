@@ -74,6 +74,7 @@ class GameTracker():
                 },
                 'players': {
                     'players_key': 'PlayerGames',
+                    'home_or_away': 'HomeOrAway',
                     'stat_id': 'StatID',
                     'team_id': 'TeamID',
                     'game_id': 'GameID',

@@ -1,0 +1,169 @@
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Page Header */
+header {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.back-button-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+/* Back to Home Button */
+.back-button {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #007bff;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+/* Game Score Overview */
+#score-summary {
+  width: 90%;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#score-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#score-summary th,
+#score-summary td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+#score-summary th {
+  background-color: #007bff;
+  color: white;
+}
+
+#score-details tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+#score-summary tbody td:first-child {
+  font-weight: bold;
+}
+
+/* Last Play Section (Centered) */
+#last-play {
+  width: 80%;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 20px auto;
+}
+
+#last-play h3 {
+  color: #007bff;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+#last-play p {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+/* Box Score Section */
+#box-score {
+  width: 100%;
+  /* Increased width */
+  max-width: 1400px;
+  /* You can set this to any desired max-width */
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Box Score Teams Layout */
+.box-score-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 40px;
+}
+
+/* Individual Team Box */
+.team-box {
+  width: 48%;
+  /* Increased width */
+  background-color: #f9f9f9;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Team Name */
+.team-box h4 {
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  color: #007bff;
+}
+
+/* Player Stats Table */
+.player-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.player-table th,
+.player-table td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  font-size: 1.2rem;
+}
+
+.player-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 10px;
+  margin-top: 20px;
+}

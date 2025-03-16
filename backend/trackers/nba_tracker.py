@@ -27,7 +27,8 @@ class NBATracker(GameTracker):
                 'status': status_,
                 'game_id': game.get(self._leagues_stats[self._league]['game']["game_id"], 'Unknown'),
                 'season': game.get(self._leagues_stats[self._league]['game']["season"], 'Unknown'),
-                'game_time': datetime.strptime(game.get(self._leagues_stats[self._league]['game']["game_time"], ''), "%Y-%m-%dT%H:%M:%S").strftime("%B %d, %Y - %I:%M %p") if game.get(self._leagues_stats[self._league]['game']["game_time"], '') else "Unknown",
+                'game_day': datetime.strptime(game.get(self._leagues_stats[self._league]['game']["game_time"], ''), "%Y-%m-%dT%H:%M:%S").strftime("%B %d, %Y") if game.get(self._leagues_stats[self._league]['game']["game_time"], '') else "Unknown",
+                'game_time': datetime.strptime(game.get(self._leagues_stats[self._league]['game']["game_time"], ''), "%Y-%m-%dT%H:%M:%S").strftime("%I:%M %p") if game.get(self._leagues_stats[self._league]['game']["game_time"], '') else "Unknown",
                 'away_team': game.get(self._leagues_stats[self._league]['game']["away_team"], 'Unknown'),
                 'away_team_id': game.get(self._leagues_stats[self._league]['game']["away_team_id"], 'Unknown'),
                 'home_team': game.get(self._leagues_stats[self._league]['game']["home_team"], 'Unknown'),
@@ -83,12 +84,14 @@ class NBATracker(GameTracker):
             game_id = game.get(
                 self._leagues_stats[self._league]['game']["game_id"], 'Unknown')
 
-            quarters_data.append({
-                f'{game_id}_quarters': {
+            quarters_data.append(
+                {
                     "game_id": game_id,
+                    "away_team": game.get(self._leagues_stats[self._league]['game']["away_team"], {'Unknown'}),
+                    "home_team": game.get(self._leagues_stats[self._league]['game']["home_team"], {'Unknown'}),
                     "quarters": game.get(self._leagues_stats[self._league]['game']["quarters"], {'Unknown'})
                 }
-            })
+            )
         return quarters_data
 
     @time_it
